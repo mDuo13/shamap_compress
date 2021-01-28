@@ -25,7 +25,7 @@ usage to _less than half_ of what it used to require.
 
 That's not a typo and these aren't theoretical numbers. These are _real-world_
 improvements of more than 50%, in servers on the XRP Ledger mainnet. The
-operator of <alloy.ee> calls it "sheer voodoo":
+operator of [alloy.ee](https://alloy.ee/) calls it "sheer voodoo":
 
 <blockquote class="twitter-tweet">
     <p lang="en" dir="ltr">1.7b9 is sheer voodoo - The higher one is 1.6.0
