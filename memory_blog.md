@@ -64,9 +64,9 @@ them.
 
 In `rippled`, one of the largest targets was the `SHAMap` and
 its constituent parts—specifically, the nodes within the `SHAMap`'s tree-like
-structure. This data structure holds the state of the ledger
-itself—all the accounts, balances, settings, exchange orders, and other
-data that make up the latest state of the XRP Ledger. On the XRP Ledger Mainnet,
+structure. This data structure holds the state of [the ledger
+itself](https://xrpl.org/ledgers.html)—all the accounts, balances, settings,
+exchange orders, and everything else it tracks. On the XRP Ledger Mainnet,
 the `SHAMap` consists of millions of nodes, which means that even small savings
 in the size of individual nodes can result in large savings overall.
 
@@ -556,6 +556,12 @@ The following chart compares the memory usage of three versions of the
 It's easy to see the significant impact these two changes have on memory usage.
 Combined, they result in total memory savings of over 50%, at some points using
 7 GB less RAM than the original code.
+
+We also had some others in the XRP Ledger ecosystem, like Alloy Networks, test
+out the new code to confirm that it worked for them as well as it did for us.
+With confirmation that it did, we merged both changes to the the `rippled`
+source code and are excited to say that they'll be part of the upcoming
+release of version 1.7.0.
 
 ## Conclusions
 
