@@ -99,11 +99,11 @@ In other words, what if we changed the tree to look more like this?
 
 ### The Naive `SHAMap` Design
 
-Any `SHAMap` is a tree-like data structure where keys are 256-bit hashes and a
+Any `SHAMap` is a tree-like data structure where keys are 256-bit hashes, and a
 node in the tree (other than the leaves) can have up to 16 children. Children
-are always stored as a 256-bit hash value that can be used to retrieved the
+are always stored as a 256-bit hash value that can be used to retrieve the
 child node from a database. Children are also sometimes cached directly in a
-node for quick traversal. A simplified class that represents a non-leaf node
+node for quick traversal. A simplified C++ class that represents a non-leaf node
 might look like this:
 
 ```c++
@@ -144,9 +144,9 @@ A sparse representation would store `hashes_` and `cachedChildren_` without
 gaps. For example, if branches 2, 5, and 7 are occupied while the rest are
 empty, then `hashes_` would store these values at indexes 0, 1, and 2. To look
 up a child in a sparse array, count how many non-empty branches come before it.
-So, if branches 2, 5, and 7 are occupied, and you want to the child in branch 5,
-there's 1 branch with an index less than 5, you'd look at array index 1 of the
-`hashes_` array.
+For example, if branches 2, 5, and 7 are occupied, and you want to the child in
+branch 5, there's 1 branch with an index less than 5, so you'd look at array
+index 1 of the `hashes_` array.
 
 How much memory does this save? Each hash is 256 bits—that's 32 bytes—and each
 shared pointer is 16 bytes. That means that every time the sparse
@@ -160,7 +160,6 @@ saved by using a sparse representation.
 The following Python code demonstrates how to perform such a calculation:
 
 ```python
-
 def savings(child_hist, arg_indexes):
     """
     Given a histogram of the number of children, and the array size boundaries,
@@ -205,8 +204,9 @@ array. Alternatively, we could have different 3 sizes—say, 3, 6, and 16—or m
 To decide between all the possibilities, we had to consider the trade-offs of
 different numbers of sparse array sizes. This kind of analysis is common in
 engineering and even in other disciplines; it's kind of like deciding how many
-sizes of jeans you want to sell to make the most profit. In our case, we
-considered all of the following in deciding how to approach the problem:
+different sizes of jeans you want to manufacture to make the most profit. In
+our case, we considered all of the following in deciding how to approach the
+problem:
 
 1. Costs when moving data when the sparse array changes representations. If you
    need to add a child and the current sparse array is full, you need to
@@ -393,7 +393,7 @@ Since we wanted to keep these options open, we decided against using
 #### Approach 2: Tagged Pointer
 
 Pointers, like the one we use to refer to the array of child hashes, are the
-addresses of data structures in memory. On a 64-bit system, a pointer is always  
+addresses of data structures in memory. On a 64-bit system, a pointer is always
 64 bits (8 bytes) so that it can point to any address in memory. However, the
 operating system doesn't allocate structures into literally any address in
 memory; it generally aligns things along nice even boundaries of 8 bytes. This
@@ -505,7 +505,7 @@ freelist caching that promises even better performance.
 One of the most common operations you need to do on a sparse array is to figure
 out where in the sparse array a given branch is stored. The example we used
 earlier was that if branches 2, 5, and 7 are occupied, and we are looking for
-a child in branch 5, we count how many children are occupied below that (just
+a child in branch 5, we count how many branches are occupied below that (just
 one, branch 2) and use that as the index into the sparse array.
 
 We wanted to make sure that this operation was very fast so that the sparse
@@ -553,10 +553,9 @@ The following chart compares the memory usage of three versions of the
 
 ![b7 memory usage](/b7_memory_usage.png)
 
-![b7 memory savings](/b7_memory_savings.png)
-
 It's easy to see the significant impact these two changes have on memory usage.
-Combined, they result in total memory savings of over 50%.
+Combined, they result in total memory savings of over 50%, at some points using
+7 GB less RAM than the original code.
 
 ## Conclusions
 
@@ -566,8 +565,8 @@ Ripple we believe it doesn't have to be that way. Ironically, one of the
 biggest changes that may come out of this work to reduce the memory usage of
 the XRP Ledger is _no change_: with these improvements in place, we won't have
 to increase our recommended system specs to run `rippled`, even though the
-number of accounts and data stored in the XRP Ledger continue to grow over
-time.
+number of accounts and total data stored in the XRP Ledger continue to grow
+over time.
 
 We look forward to continuing to help the XRP Ledger grow to be the best, most
 efficient, greenest system out there for payments and more.
